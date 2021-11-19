@@ -22,7 +22,7 @@ blueprint:
             domain: light
 
 
-  source_url: 
+  source_url: https://github.com/bdalson/zha_linkind-5key/blob/main/5key-blueprint.yaml
 mode: restart
 max_exceeded: silent
 
@@ -88,11 +88,12 @@ action:
         target: !input 'light'
         data:
           brightness: 13
-  - conditions:
-    - '{{ command == ''on'' }}'
-    sequence:
-      - service: light.toggle
-        target: !input 'light'
+# Turning on will be handled by Node Red
+#   - conditions:
+#     - '{{ command == ''on'' }}'
+#     sequence:
+#       - service: light.toggle
+#         target: !input 'light'
   - conditions:
     - '{{ command == ''off'' }}'
     sequence:
