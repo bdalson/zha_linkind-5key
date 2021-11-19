@@ -1,0 +1,222 @@
+# original from https://community.home-assistant.io/t/zha-linkind-5-key-remote-control-zbt-rgbwswitch-d0801/328735
+
+blueprint:
+  name: ZHA - Linkind 5-Key Remote Control
+  description: Automate your Linkind 5-Key Remote Control using ZHA events.
+  domain: automation
+  input:
+    remote:
+      name: Remote
+      description: Linkind 5-Key Remote Control to use
+      selector:
+        device:
+          integration: zha
+          manufacturer: lk
+          model: ZBT-RGBWSwitch-D0801
+    light:
+      name: Light(s)
+      description: The light(s) to control
+      selector:
+        target:
+          entity:
+            domain: light
+
+
+  source_url: 
+mode: restart
+max_exceeded: silent
+
+trigger:
+- platform: event
+  event_type: zha_event
+  event_data:
+    device_id: !input 'remote'
+action:
+- variables:
+    command: '{{ trigger.event.data.command }}'
+    cluster_id: '{{ trigger.event.data.cluster_id }}'
+    endpoint_id: '{{ trigger.event.data.endpoint_id }}'
+    args: '{{ trigger.event.data.args }}'
+- choose:
+  - conditions:
+    - '{{ command == ''move_to_level'' }}'
+    - '{{ cluster_id == 8 }}'
+    - '{{ endpoint_id == 1 }}'
+    - '{{ args == [255, 3] }}'
+    sequence:
+      - service: light.turn_on
+        target: !input 'light'
+        data:
+          brightness: 255
+  - conditions:
+    - '{{ command == ''move_to_level'' }}'
+    - '{{ cluster_id == 8 }}'
+    - '{{ endpoint_id == 1 }}'
+    - '{{ args == [191, 3] }}'
+    sequence:
+      - service: light.turn_on
+        target: !input 'light'
+        data:
+          brightness: 191
+  - conditions:
+    - '{{ command == ''move_to_level'' }}'
+    - '{{ cluster_id == 8 }}'
+    - '{{ endpoint_id == 1 }}'
+    - '{{ args == [127, 3] }}'
+    sequence:
+      - service: light.turn_on
+        target: !input 'light'
+        data:
+          brightness: 127
+  - conditions:
+    - '{{ command == ''move_to_level'' }}'
+    - '{{ cluster_id == 8 }}'
+    - '{{ endpoint_id == 1 }}'
+    - '{{ args == [64, 3] }}'
+    sequence:
+      - service: light.turn_on
+        target: !input 'light'
+        data:
+          brightness: 64
+  - conditions:
+    - '{{ command == ''move_to_level'' }}'
+    - '{{ cluster_id == 8 }}'
+    - '{{ endpoint_id == 1 }}'
+    - '{{ args == [13, 3] }}'
+    sequence:
+      - service: light.turn_on
+        target: !input 'light'
+        data:
+          brightness: 13
+  - conditions:
+    - '{{ command == ''on'' }}'
+    sequence:
+      - service: light.toggle
+        target: !input 'light'
+  - conditions:
+    - '{{ command == ''off'' }}'
+    sequence:
+      - service: light.toggle
+        target: !input 'light'
+  - conditions:
+    - '{{ command == ''move_to_color_temp'' }}'
+    - '{{ cluster_id == 768 }}'
+    - '{{ endpoint_id == 1 }}'
+    - '{{ args == [153, 3] }}'
+    sequence:
+      - service: light.turn_on
+        target: !input 'light'
+        data:
+          color_temp: 153
+  - conditions:
+    - '{{ command == ''move_to_color_temp'' }}'
+    - '{{ cluster_id == 768 }}'
+    - '{{ endpoint_id == 1 }}'
+    - '{{ args == [200, 3] }}'
+    sequence:
+      - service: light.turn_on
+        target: !input 'light'
+        data:
+          color_temp: 200
+  - conditions:
+    - '{{ command == ''move_to_color_temp'' }}'
+    - '{{ cluster_id == 768 }}'
+    - '{{ endpoint_id == 1 }}'
+    - '{{ args == [250, 3] }}'
+    sequence:
+      - service: light.turn_on
+        target: !input 'light'
+        data:
+          color_temp: 250
+  - conditions:
+    - '{{ command == ''move_to_color_temp'' }}'
+    - '{{ cluster_id == 768 }}'
+    - '{{ endpoint_id == 1 }}'
+    - '{{ args == [370, 3] }}'
+    sequence:
+      - service: light.turn_on
+        target: !input 'light'
+        data:
+          color_temp: 370
+          
+          
+  - conditions:
+    - '{{ command == ''move_to_color'' }}'
+    - '{{ cluster_id == 768 }}'
+    - '{{ endpoint_id == 1 }}'
+    - '{{ args == [15944, 5065, 10] }}'
+    sequence:
+      - service: light.turn_on
+        target: !input 'light'
+        data:
+          color_name: red
+  - conditions:
+    - '{{ command == ''move_to_color'' }}'
+    - '{{ cluster_id == 768 }}'
+    - '{{ endpoint_id == 1 }}'
+    - '{{ args == [14416, 2637, 10] }}'
+    sequence:
+      - service: light.turn_on
+        target: !input 'light'
+        data:
+          color_name: orange
+  - conditions:
+    - '{{ command == ''move_to_color'' }}'
+    - '{{ cluster_id == 768 }}'
+    - '{{ endpoint_id == 1 }}'
+    - '{{ args == [8519, 2612, 10] }}'
+    sequence:
+      - service: light.turn_on
+        target: !input 'light'
+        data:
+          color_name: yellow
+  - conditions:
+    - '{{ command == ''move_to_color'' }}'
+    - '{{ cluster_id == 768 }}'
+    - '{{ endpoint_id == 1 }}'
+    - '{{ args == [8012, 22404, 10] }}'
+    sequence:
+      - service: light.turn_on
+        target: !input 'light'
+        data:
+          color_name: green
+  - conditions:
+    - '{{ command == ''move_to_color'' }}'
+    - '{{ cluster_id == 768 }}'
+    - '{{ endpoint_id == 1 }}'
+    - '{{ args == [7208, 53738, 10] }}'
+    sequence:
+      - service: light.turn_on
+        target: !input 'light'
+        data:
+          color_name: homeassistant
+  - conditions:
+    - '{{ command == ''move_to_color'' }}'
+    - '{{ cluster_id == 768 }}'
+    - '{{ endpoint_id == 1 }}'
+    - '{{ args == [29820, 33507, 10] }}'
+    sequence:
+      - service: light.turn_on
+        target: !input 'light'
+        data:
+          color_name: blue
+  - conditions:
+    - '{{ command == ''move_to_color'' }}'
+    - '{{ cluster_id == 768 }}'
+    - '{{ endpoint_id == 1 }}'
+    - '{{ args == [35406, 28508, 10] }}'
+    sequence:
+      - service: light.turn_on
+        target: !input 'light'
+        data:
+          color_name: darkviolet
+  - conditions:
+    - '{{ command == ''move_to_color'' }}'
+    - '{{ cluster_id == 768 }}'
+    - '{{ endpoint_id == 1 }}'
+    - '{{ args == [44563, 20315, 10] }}'
+    sequence:
+      - service: light.turn_on
+        target: !input 'light'
+        data:
+          color_name: deeppink
