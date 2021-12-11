@@ -88,17 +88,17 @@ action:
         target: !input 'light'
         data:
           brightness: 13
-# Turning on will be handled by Node Red
+# Turning on/off will be handled by Node Red
 #   - conditions:
 #     - '{{ command == ''on'' }}'
 #     sequence:
 #       - service: light.toggle
 #         target: !input 'light'
-  - conditions:
-    - '{{ command == ''off'' }}'
-    sequence:
-      - service: light.toggle
-        target: !input 'light'
+#   - conditions:
+#     - '{{ command == ''off'' }}'
+#     sequence:
+#       - service: light.toggle
+#         target: !input 'light'
   - conditions:
     - '{{ command == ''move_to_color_temp'' }}'
     - '{{ cluster_id == 768 }}'
